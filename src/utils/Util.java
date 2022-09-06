@@ -1,8 +1,8 @@
 package utils;
 
-public class util {
+public class Util {
     public static void showMessage(String message) {
-        if (!message.equals("")) {
+        if (!message.isEmpty()) {
             for (int i = 0; i < message.length() + 4; i++) {
                 System.out.print("-");
             }

@@ -10,8 +10,7 @@ public class Employee {
     private double salary;
 
     public Employee(String fio, String department, int salary) {
-        this.id = commonId;
-        commonId++;
+        this.id = commonId++;
         this.fio = fio;
         this.department = department;
         this.salary = salary;

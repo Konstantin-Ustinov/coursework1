@@ -2,7 +2,7 @@ import java.util.InputMismatchException;
 import java.util.Scanner;
 
 import services.EmployeeService;
-import utils.util;
+import utils.Util;
 
 public class Main {
 
@@ -85,7 +85,7 @@ public class Main {
                 case "4": findMaxSalary(department); break;
                 case "5": findAverageSalary(department); break;
                 case "6": riseAllSalary(department, scanner); break;
-                case "0": isShowMenu = false; break;
+                case "0": isShowMenu = false; scanner.close(); break;
                 default: System.out.println("Такой комманды нет. Выберете комманду из списка");
             }
         } while (isShowMenu);
@@ -93,35 +93,35 @@ public class Main {
 
     private static void showAll(String department) {
         if (department.equals("all")) {
-            util.showMessage("Показаны все сотрудники:");
+            Util.showMessage("Показаны все сотрудники:");
         } else {
-            util.showMessage("Показаны все сотрудники отдела:" + department);
+            Util.showMessage("Показаны все сотрудники отдела:" + department);
         }
         System.out.println(EmployeeService.showAll(department));
     }
 
     private static void showSumAllSalary(String department) {
         int sum = EmployeeService.sumAllSalary(department);
-        util.showMessage("Общая сумма зарплат в месяц: " + sum + EmployeeService.pluralizeRubles(sum));
+        Util.showMessage("Общая сумма зарплат в месяц: " + sum + EmployeeService.pluralizeRubles(sum));
     }
 
     private static void findMinSalary(String department) {
         double min = EmployeeService.findMinSalary(department);
-        util.showMessage("Минимальная зарплата: " + min + EmployeeService.pluralizeRubles((int) min));
+        Util.showMessage("Минимальная зарплата: " + min + EmployeeService.pluralizeRubles((int) min));
     }
 
     private static void findMaxSalary(String department) {
         double max = EmployeeService.findMaxSalary(department);
-        util.showMessage("Максимальная зарплата: " + max + EmployeeService.pluralizeRubles((int) max));
+        Util.showMessage("Максимальная зарплата: " + max + EmployeeService.pluralizeRubles((int) max));
     }
 
     private static void findAverageSalary(String department) {
         double av = EmployeeService.findAverageSalary(department);
-        util.showMessage("Средняя зарплата: " + av + EmployeeService.pluralizeRubles((int) av));
+        Util.showMessage("Средняя зарплата: " + av + EmployeeService.pluralizeRubles((int) av));
     }
 
     private static void showAllFio() {
-        util.showMessage("Показаны все Ф.И.О. сотрудников:");
+        Util.showMessage("Показаны все Ф.И.О. сотрудников:");
         System.out.println(EmployeeService.showAllFio());
     }
 
@@ -129,14 +129,14 @@ public class Main {
         System.out.println("Введите % подъема зарплаты целым числом (например 10)");
         int percent = inputNum(scanner);
         if (EmployeeService.riseSalary(department, percent)) {
-            util.showMessage("Зарплаты всех сотрудников увеличены на " + percent + " %");
+            Util.showMessage("Зарплаты всех сотрудников увеличены на " + percent + " %");
         }
     }
 
     private static String inputDepartment(Scanner scanner) {
         System.out.println("Введите название отдела (1-5)");
         String department = "";
-        while (department.equals("")) {
+        while (department.isEmpty()) {
             department = scanner.next();
         }
         return department;
@@ -145,11 +145,11 @@ public class Main {
     private static void findAllBySalaryLimit(String lessOrMore, Scanner scanner) {
         System.out.println("Введите лимит зарплаты целым числом (например 50000)");
         int limit = inputNum(scanner);
-        if (lessOrMore.equals("less")) {
-            util.showMessage("Показаны все сотрудники с зарплатой меньше " + limit + ":");
+        if ("less".equals(lessOrMore)) {
+            Util.showMessage("Показаны все сотрудники с зарплатой меньше " + limit + ":");
             System.out.println(EmployeeService.showAllSalaryLessLimit(limit));
-        } else if (lessOrMore.equals("more")){
-            util.showMessage("Показаны все сотрудники с зарплатой больше " + limit + ":");
+        } else if ("more".equals(lessOrMore)){
+            Util.showMessage("Показаны все сотрудники с зарплатой больше " + limit + ":");
             System.out.println(EmployeeService.showAllSalaryMoreLimit(limit));
         }
     }
@@ -173,7 +173,7 @@ public class Main {
     private static void addEmployee(Scanner scanner) {
         System.out.println("Введите ФИО сотрудника");
         String fio = "";
-        while (fio.equals("")) {
+        while (fio.isEmpty()) {
             fio = scanner.next();
         }
         System.out.println("Введите Отдел");
@@ -181,9 +181,9 @@ public class Main {
         System.out.println("Введите зарплату сотрудника");
         int salary = inputNum(scanner);
         if (EmployeeService.addEmployee(fio, department, salary)) {
-            util.showMessage("Сотрудник успешно добавлен!");
+            Util.showMessage("Сотрудник успешно добавлен!");
         } else {
-            util.showMessage("Сотрудник не добавлен. В массиве нет места.");
+            Util.showMessage("Сотрудник не добавлен. В массиве нет места.");
         }
     }
 
@@ -193,9 +193,9 @@ public class Main {
         showAll("all");
         int id = inputNum(scanner);
         if (EmployeeService.deleteEmployee(id)) {
-            util.showMessage("Сотрудник успешно удален!");
+            Util.showMessage("Сотрудник успешно удален!");
         } else {
-            util.showMessage("Такой сотрудник не найден.");
+            Util.showMessage("Такой сотрудник не найден.");
         }
     }
 
@@ -209,17 +209,17 @@ public class Main {
             System.out.println("Введите зарплату:");
             int salary = inputNum(scanner);
             if (EmployeeService.setSalary(id, salary)) {
-                util.showMessage("Зарплата изменена!");
+                Util.showMessage("Зарплата изменена!");
             } else {
-                util.showMessage("Такой сотрудник не найден.");
+                Util.showMessage("Такой сотрудник не найден.");
             }
         } else if (choice == 2) {
             System.out.println("Введите отдел:");
             String department = inputDepartment(scanner);
             if (EmployeeService.setDepartment(id, department)) {
-                util.showMessage("Отдел успешно изменен!");
+                Util.showMessage("Отдел успешно изменен!");
             } else {
-                util.showMessage("Такой сотрудник не найден.");
+                Util.showMessage("Такой сотрудник не найден.");
             }
         }
 
